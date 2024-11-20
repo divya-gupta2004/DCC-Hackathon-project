@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List with Reminders</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f1f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      padding: 40px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .todo-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .todo-form input, .todo-form select, .todo-form textarea {
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      width: 100%;
+    }
+
+    .todo-form input:focus, .todo-form select:focus, .todo-form textarea:focus {
+      border-color: #4caf50;
+      outline: none;
+    }
+
+    .todo-form button {
+      grid-column: span 2;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+
+    .todo-form button:hover {
+      background-color: #45a049;
+    }
+
+    /* Task List Styles */
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 16px;
+      background-color: #f9f9f9;
+      border-left: 8px solid #4caf50;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .task-item:hover {
+      background-color: #e7f5e6;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .task-item .task-details {
+      flex: 1;
+    }
+
+    .task-item .task-name {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .task-item .task-desc {
+      color: #777;
+      font-size: 1rem;
+    }
+
+    .task-item .priority {
+      font-weight: 700;
+      color: #4caf50;
+    }
+
+    .task-item .due-date {
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    .task-item .actions button {
+      background-color: #ff5b5b;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .task-item .actions button:hover {
+      background-color: #e04e4e;
+    }
+
+    /* Reminder Section */
+    .reminder-section {
+      margin-top: 50px;
+      background-color: #eef9f4;
+      padding: 25px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    .reminder-section h2 {
+      color: #4caf50;
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+    }
+
+    .reminder-section p {
+      color: #555;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .todo-form {
+        grid-template-columns: 1fr;
+      }
+
+      .todo-form button {
+        font-size: 1rem;
+      }
+
+      .task-item {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .task-item .task-details {
+        width: 100%;
+      }
+
+      .task-item .actions {
+        margin-top: 10px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>To-Do List with Reminders</h1>
+
+    <!-- To-Do List Form -->
+    <div class="todo-form">
+      <input type="text" id="task-name" placeholder="Task Name" required>
+      <textarea id="task-desc" rows="4" placeholder="Task Description" required></textarea>
+      <select id="priority">
+        <option value="High">High Priority</option>
+        <option value="Medium">Medium Priority</option>
+        <option value="Low">Low Priority</option>
+      </select>
+      <input type="date" id="due-date" required>
+      <button id="add-task">Add Task</button>
+    </div>
+
+    <!-- Task List -->
+    <div class="task-list" id="task-list">
+      <!-- Tasks will be dynamically added here -->
+    </div>
+
+    <!-- Reminder Section -->
+    <div class="reminder-section">
+      <h2>Set Reminders</h2>
+      <p>Ensure you never miss a deadline by enabling reminders for your tasks. Tasks with deadlines will have automatic reminders based on your settings.</p>
+    </div>
+  </div>
+
+  <script>
+    const addTaskButton = document.getElementById('add-task');
+    const taskName = document.getElementById('task-name');
+    const taskDesc = document.getElementById('task-desc');
+    const priority = document.getElementById('priority');
+    const dueDate = document.getElementById('due-date');
+    const taskList = document.getElementById('task-list');
+
+    // Function to add a new task to the list
+    function addTask() {
+      const taskNameValue = taskName.value;
+      const taskDescValue = taskDesc.value;
+      const priorityValue = priority.value;
+      const dueDateValue = dueDate.value;
+
+      if (!taskNameValue || !taskDescValue || !dueDateValue) return;
+
+      const taskItem = document.createElement('div');
+      taskItem.classList.add('task-item');
+
+      taskItem.innerHTML = `
+        <div class="task-details">
+          <div class="task-name">${taskNameValue}</div>
+          <div class="task-desc">${taskDescValue}</div>
+          <div class="priority">${priorityValue}</div>
+          <div class="due-date">Due: ${new Date(dueDateValue).toLocaleDateString()}</div>
+        </div>
+        <div class="actions">
+          <button onclick="deleteTask(this)">Delete</button>
+        </div>
+      `;
+
+      taskList.appendChild(taskItem);
+      taskName.value = '';
+      taskDesc.value = '';
+      priority.value = 'Medium';
+      dueDate.value = '';
+    }
+
+    // Function to delete a task
+    function deleteTask(button) {
+      const taskItem = button.closest('.task-item');
+      taskItem.remove();
+    }
+
+    addTaskButton.addEventListener('click', addTask);
+  </script>
+  
+</body>
+</html>

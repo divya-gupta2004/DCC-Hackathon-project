@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Assignment & Progress Tracker</title>
+    <link rel="stylesheet" href="project1.css">
+</head>
+
+<body>
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcome-screen">
+        <div>
+            <h1>Welcome to ProjectHub</h1>
+            <p>Effortlessly assign and track your projects in real-time.</p>
+            <button class="get-started-btn" onclick="startApp()">Get Started</button>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav>
+        <div>
+            <h1>ProjectHub</h1>
+        </div>
+        <ul>
+            <li><a href="#assign">Assign Project</a></li>
+            <li><a href="#track">Track Progress</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header -->
+    <header>
+        <h1>Project Assignment & Tracking System</h1>
+        <p>
+            Empowering alumni to <span class="highlight">assign projects effortlessly</span>,
+            <span class="highlight">track progress in real-time</span>, and
+            <span class="highlight">foster collaboration</span> between senior and junior developers.
+        </p>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Assign Project -->
+        <div class="form-container" id="assign">
+            <h2>Assign a Project</h2>
+            <form>
+                <label for="projectName">Project Name</label>
+                <input type="text" id="projectName" placeholder="Enter project name" required>
+
+                <label for="developer">Assign Developer</label>
+                <select id="developer" required>
+                    <option value="">Select a Developer</option>
+                    <option value="Senior Dev">Senior Developer</option>
+                    <option value="Junior Dev">Junior Developer</option>
+                </select>
+
+                <label for="description">Project Description</label>
+                <textarea id="description" placeholder="Enter project details..." required></textarea>
+
+                <label for="deadline">Deadline</label>
+                <input type="date" id="deadline" required>
+
+                <button type="submit">Assign Project</button>
+            </form>
+        </div>
+
+        <!-- Track Progress -->
+        <div class="tracker-container" id="track">
+            <h2>Track Progress</h2>
+            <div class="milestone">
+                <div class="title">Initial Setup</div>
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                <span class="status completed">Completed</span>
+            </div>
+
+            <div class="milestone">
+                <div class="title">Development Phase</div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 50%;"></div>
+                </div>
+                <span class="status">In Progress</span>
+            </div>
+
+            <div class="milestone">
+                <div class="title">Testing & Review</div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 25%;"></div>
+                </div>
+                <span class="status pending">Pending</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Created by ProjectHub Team | <a href="mailto:contact@projecthub.com">Contact Us</a></p>
+    </footer>
+
+    <script src="project1.js"></script>
+</body>
+
+</html>
